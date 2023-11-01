@@ -10,15 +10,29 @@ count = 1
 
 while count < len(read):
     instruction = []
+    inputs = read[count].split(": ")
 
     if "set" in read[count]:
         instruction.append("set")
-        instruction.append(read[count].split(": ")[1])
-        instruction.append(read[count].split(": ")[2])
+        instruction.append(inputs[1])
+        instruction.append(inputs[2])
 
-    if "send" in read[count]:
+    elif "send" in read[count]:
         instruction.append("send")
-        instruction.append(read[count].split(": ")[1])
+        instruction.append(inputs[1])
+
+    elif "inc" in read[count]:
+        instruction.append("inc")
+        instruction.append(inputs[1])
+
+    elif "dec" in read[count]:
+        instruction.append("dec")
+        instruction.append(inputs[1])
+
+    elif "condition" in read[count]:
+        instruction.append("condition")
+        instruction.append(inputs[1])
+        instruction.append(inputs[2])
 
     lines[count] = instruction
     count += 1
@@ -26,12 +40,23 @@ while count < len(read):
 count = 1
 
 while count <= len(lines):
-    typeinstruction = lines[count][0]
+    typeofinstruction = lines[count][0]
+    value = int(lines[count][1], 16)
 
-    if typeinstruction == "set":
-        memory[int(lines[count][1], 16)] = lines[count][2]
+    if typeofinstruction == "set":
+        memory[value] = lines[count][2]
 
-    elif typeinstruction == "send":
-        print(memory[int(lines[count][1], 16)])
+    elif typeofinstruction == "send":
+        print(value)
+
+    elif typeofinstruction == "inc":
+        memory[value] += 1
+
+    elif typeofinstruction == "dec":
+        memory[value] -= 1
+
+    elif typeofinstruction == "condition":
+        if eval(lines[count][1]):
+            count = int(lines[count][2])
     
     count += 1
