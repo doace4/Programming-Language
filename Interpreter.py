@@ -5,41 +5,42 @@ for x, y in enumerate(read):
     read[x] = y.replace("\n", "")
 
 memory = [0] * int(read[0].replace("memory ", ""))
-lines = dict()
-count = 1
+lines = []
+count = 0
 
-while count < len(read):
+for x in read:
     instruction = []
-    inputs = read[count].split(": ")
+    inputs = x.split(": ")
 
-    if "set" in read[count]:
+    if inputs[0] == "set":
         instruction.append("set")
         instruction.append(inputs[1])
         instruction.append(inputs[2])
 
-    elif "send" in read[count]:
+    elif inputs[0] == "send":
         instruction.append("send")
         instruction.append(inputs[1])
 
-    elif "inc" in read[count]:
+    elif inputs[0] == "inc":
         instruction.append("inc")
         instruction.append(inputs[1])
 
-    elif "dec" in read[count]:
+    elif inputs[0] == "dec":
         instruction.append("dec")
         instruction.append(inputs[1])
 
-    elif "condition" in read[count]:
+    elif inputs[0] == "condition":
         instruction.append("condition")
         instruction.append(inputs[1])
         instruction.append(inputs[2])
 
-    lines[count] = instruction
-    count += 1
+    else:
+        instruction = 0
 
-count = 1
+    if instruction:
+        lines.append(instruction)
 
-while count <= len(lines):
+while count < len(lines):
     typeofinstruction = lines[count][0]
     value = int(lines[count][1], 16)
 
@@ -47,7 +48,7 @@ while count <= len(lines):
         memory[value] = lines[count][2]
 
     elif typeofinstruction == "send":
-        print(value)
+        print(memory[value])
 
     elif typeofinstruction == "inc":
         memory[value] += 1
