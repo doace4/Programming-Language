@@ -15,7 +15,12 @@ for x in read:
     if inputs[0] == "set":
         instruction.append("set")
         instruction.append(inputs[1])
-        instruction.append(inputs[2])
+
+        try:
+            instruction.append(int(inputs[2]))
+
+        except ValueError:
+            instruction.append(inputs[2])
 
     elif inputs[0] == "send":
         instruction.append("send")
@@ -31,7 +36,9 @@ for x in read:
 
     elif inputs[0] == "condition":
         instruction.append("condition")
-        instruction.append(inputs[1])
+        instruction.append(inputs[1].split(" ")[0])
+        instruction.append(inputs[1].split(" ")[1])
+        instruction.append(inputs[1].split(" ")[2])
         instruction.append(inputs[2])
 
     else:
@@ -48,6 +55,7 @@ while count < len(lines):
         memory[value] = lines[count][2]
 
     elif typeofinstruction == "send":
+        pass
         print(memory[value])
 
     elif typeofinstruction == "inc":
@@ -57,7 +65,24 @@ while count < len(lines):
         memory[value] -= 1
 
     elif typeofinstruction == "condition":
-        if eval(lines[count][1]):
-            count = int(lines[count][2])
+        if lines[count][2] == "<":
+            if memory[value] < int(lines[count][3]):
+                count = int(lines[count][4])
+        
+        elif lines[count][2] == ">":
+            if memory[value] > int(lines[count][3]):
+                count = int(lines[count][4])
+
+        elif lines[count][2] == "<=":
+            if memory[value] <= int(lines[count][3]):
+                count = int(lines[count][4])
+
+        elif lines[count][2] == ">=":
+            if memory[value] >= int(lines[count][3]):
+                count = int(lines[count][4])
+
+        elif lines[count][2] == "=":
+            if memory[value] == int(lines[count][3]):
+                count = int(lines[count][4])
     
     count += 1
