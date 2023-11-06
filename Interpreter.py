@@ -1,3 +1,6 @@
+from time import time as t
+start = t()
+
 with open("program.txt", "r") as file:
     read = file.readlines()
 
@@ -86,3 +89,6 @@ while count < len(lines):
                 count = int(lines[count][4])
     
     count += 1
+
+stop = t()
+print(f"The program finished in {stop - start} secs")
