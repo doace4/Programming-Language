@@ -7,7 +7,7 @@ with open("program.txt", "r") as file:
 for x, y in enumerate(read):
     read[x] = y.replace("\n", "")
 
-memory = [0] * int(read[0].replace("memory ", ""))
+memory = [0] * int(read[0][6:])
 lines = []
 count = 0
 
